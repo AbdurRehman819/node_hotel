@@ -21,5 +21,5 @@ const personRoutes=require('./routes/personRoutes');
 //using end points with routers
 app.use('/person',personRoutes);
 
-
+//comment added just for testing
 app.listen(3000,()=>console.log("server listening on port 3000"));
