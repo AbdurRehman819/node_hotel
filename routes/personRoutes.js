@@ -11,9 +11,9 @@ router.post('/',async(req,res)=>{
 
   const response=await newPerson.save();
   console.log("successfully saved");
-  res.status(200).json(response);
-                 
-  }catch(err){
+  res.status(200).json(response);            
+  }
+  catch(err){
     console.log(err);
   res.status(500).json({error:"internel error occured"});
   }
