@@ -51,8 +51,8 @@ router.put('/:id',async(req,res)=>{
   try{const personId= req.params.id;
   const personData=req.body;
   const response=await  MenuItem.findByIdAndUpdate(personId,personData,{
-    runValidators:true,
-    new:true
+    runValidators:true, // ensures the update obeys your schema rules
+    new:true  // returns the updated document (not the old one)
   });
   if(!response){
      res.status(404).json({ error: "Item not found not found" });

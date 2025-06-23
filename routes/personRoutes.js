@@ -54,7 +54,8 @@ router.put('/:id',async(req,res)=>{
    const personId=req.params.id;
    const updatedData=req.body;
    const response= await Person.findByIdAndUpdate(personId,updatedData,{
-    new:true,runValidators:true
+    new:true,  // returns the updated document (not the old one)
+    runValidators:true// ensures the update obeys your schema rules
   });
   if(!response){
     res.status(404).json({ error: "Person not found" });

@@ -1,22 +1,35 @@
-const mongoose=require("mongoose");
+
+const mongoose = require("mongoose");
+
+// Load environment variables from .env file (like MONGODB_URL)
 require('dotenv').config();
-//const mongoUrl=process.env.LocalHost_URL;
-const mongoUrl=process.env.MONGODB_URL;
-mongoose.connect(mongoUrl,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true,
+
+// reading the MongoDB connection URL from the .env file.
+const mongoUrl = process.env.MONGODB_URL;
+
+// Connect to MongoDB using Mongoose
+mongoose.connect(mongoUrl, {
+    useNewUrlParser: true,         // Use new URL parser 
+    useUnifiedTopology: true       // Use new topology engine 
 });
 
+// Get the default connection object to handle events
+const db = mongoose.connection;
 
-const db=mongoose.connection;
-
-
-//can define events like this using  db.on
-db.on('connected',()=>{
-    console.log("connected to mongodb server");
+// Event listener: when successfully connected to the database
+db.on('connected', () => {
+    console.log("✅ Connected to MongoDB server");
 });
-db.on('disconnected',()=>{
-    console.log("disconnected from mongodb server");
+
+// Event listener: when the database connection is disconnected
+db.on('disconnected', () => {
+    console.log("⚠️ Disconnected from MongoDB server");
 });
-db.on('error',(err)=>{console.log("error occured");});
-module.exports=db;
+
+// Event listener: when there's a connection error
+db.on('error', (err) => {
+    console.error("❌ Connection error:", err);
+});
+
+// Export the db object so it can be used in other files
+module.exports = db;
