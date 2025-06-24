@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 // Load environment variables from .env file (like MONGODB_URL)
 require('dotenv').config();
+ 
+//const mongoUrl=process.env.LOCALHOSt_URL;
 
 // reading the MongoDB connection URL from the .env file.
 const mongoUrl = process.env.MONGODB_URL;
