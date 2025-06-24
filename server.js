@@ -6,9 +6,9 @@ const app = express();
 app.use(bodyParser.json());//body-parser is a middleware in Node.js used with Express.js. Its job is to automatically parse the 
 // //data that comes in the body of HTTP requests, especially in POST, PUT, or PATCH requests.
 const LocalStrategy=require('passport-local').Strategy;
+const passport=require('passport')
 require('dotenv').config();
 const logRequest=(req,res,next)=>{
-  
   console.log(`[${new Date().toLocaleString()}]:request mode to ${req.originalUrl}` );
   next();
 }
@@ -30,7 +30,7 @@ passport.use(new LocalStrategy(async(userName,password,done)=>{
     }
 
    }catch(err){
-    return done(err,)
+    return done(err)
 
    }
 
