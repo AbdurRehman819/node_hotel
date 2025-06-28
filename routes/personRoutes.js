@@ -1,9 +1,10 @@
 const express=require('express');
 const router=express.Router();
 const Person = require('./../models/person');
+const {generateToken,jwtAuthMiddleWare} = require('./../jwt');
 
-// to save data from client to database
-router.post('/',async(req,res)=>{
+// create new person 
+router.post('/signup',async(req,res)=>{
   try{
   const data=req.body;
 
@@ -11,17 +12,71 @@ router.post('/',async(req,res)=>{
 
   const response=await newPerson.save();
   console.log("successfully saved");
-  res.status(200).json(response);            
+  const Payload={id:response.id,username:response.username};
+
+  const token=generateToken(Payload);
+  console.log('Token is :',token);
+  res.status(200).json({response:response,token:token});            
   }
   catch(err){
     console.log(err);
   res.status(500).json({error:"internel error occured"});
   }
 })
+//log in rout 
+router.post('/login',async(req,res)=>{
+  try{
+    //extract username and password from body
+    const {username,password}=req.body;
+    //finding user by username
+    const user=await Person.findOne({username:username});
+//checking if user name or pasword incorrect
+    if(!user || !( await user.comparePassword(password))){
+      return res.status(404).json({message:"Invalid username or password"});
+    }
+  //generatiing token
+    const payload={
+      id:user.id,
+      username:user.username
+    }
+    const token= generateToken(payload);
+
+   //returning token as response
+    res.status(200).json({token});
+
+  }catch(err){
+    console.log(err);
+    res.status(500).json({error:'internel server error'});
+    
+
+  }
+  
+
+  }
+);
+//profile route
+router.get('/profile',jwtAuthMiddleWare,async(req,res)=>{
+ try{
+   const userData=req.user;
+  console.log('user data:',userData);
+
+  const userID=userData.id;
+
+  const response= await Person.findById(userID);
+
+  res.status(200).json(response);
+ }catch(err){
+   
+  console.log(err);
+  res.status(500).json({error:"internel server error"});
+ }
+
+})
 //to get data from database to client
-router.get('/',async(req,res)=>{
+router.get('/',jwtAuthMiddleWare,async(req,res)=>{
   try{
     const data=await Person.find();
+
     console.log("Data is fetched");
     res.status(200).json(data)
   }catch(err){

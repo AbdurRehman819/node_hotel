@@ -20,17 +20,17 @@ const db = mongoose.connection;
 
 // Event listener: when successfully connected to the database
 db.on('connected', () => {
-    console.log("✅ Connected to MongoDB server");
+    console.log(" Connected to MongoDB server");
 });
 
 // Event listener: when the database connection is disconnected
 db.on('disconnected', () => {
-    console.log("⚠️ Disconnected from MongoDB server");
+    console.log("Disconnected from MongoDB server");
 });
 
 // Event listener: when there's a connection error
 db.on('error', (err) => {
-    console.error("❌ Connection error:", err);
+    console.error("Connection error:", err);
 });
 
 // Export the db object so it can be used in other files
