@@ -2,13 +2,31 @@ const express=require('express');
 const router=express.Router();
 const Person = require('./../models/person');
 const {generateToken,jwtAuthMiddleWare} = require('./../jwt');
+const multer=require('multer');
+
+
+const storage=multer.memoryStorage(); 
+
+const upload=multer(storage);
 
 // create new person 
-router.post('/signup',async(req,res)=>{
+router.post('/signup',upload.single('photo'),async(req,res)=>{
   try{
+    const photoBase64=  req.file?req.file.buffer.toString('base64'):null;
   const data=req.body;
 
-  const newPerson=new Person(data);
+  const newPerson=new Person({
+    name:data.name,
+     age:data.age,
+    mbile:data.mbile,
+    email:data.email,
+    address:data.address,
+    salary:data.salary,
+    username:data.username,
+    password:data.password,
+    work:data.work,
+    photo:photoBase64
+  });
 
   const response=await newPerson.save();
   console.log("successfully saved");

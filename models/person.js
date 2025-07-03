@@ -43,7 +43,9 @@ const personschema=new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    photo:{type:String}
+    
 });
 
 personschema.pre('save',async function(next){

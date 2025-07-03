@@ -1,6 +1,7 @@
 const jwt=require('jsonwebtoken')
 
 const jwtAuthMiddleWare=(req,res,next)=>{
+
 //first check request header have authorization or not
 const authorization=req.headers.authorization;
 if(!authorization)return res.status(401).json({message:"Token not found"});
@@ -8,12 +9,14 @@ if(!authorization)return res.status(401).json({message:"Token not found"});
 
     //extracting jwt token from req body
 const token=req.headers.authorization.split(' ')[1];
-if(!token) return res.status(401).json({message:"Unauthorize"});
+if(!token) return res.status(401).json({message:"Unauthorized"});
 
 try{
+    
     //verify jwt token 
     const decoded= jwt.verify(token,process.env.JWT_SECERET);
-//attatch
+   
+    //attatch
    req.user=decoded;
    next();
 }catch(err){
@@ -23,8 +26,8 @@ try{
 
 }
 
-const generateToken=(userData)=>{
-    return jwt.sign(userData,process.env.JWT_SECERET);
+const generateToken=(payload)=>{
+    return jwt.sign(payload,process.env.JWT_SECERET);
 }
 
 module.exports={generateToken,jwtAuthMiddleWare}

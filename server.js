@@ -4,7 +4,8 @@ const bodyParser=require('body-parser');
 
 const app = express();
 const passport=require('./auth');
-app.use(bodyParser.json());//body-parser is a middleware in Node.js used with Express.js. Its job is to automatically parse the 
+app.use(bodyParser.json());
+//body-parser is a middleware in Node.js used with Express.js. Its job is to automatically parse the 
 // //data that comes in the body of HTTP requests, especially in POST, PUT, or PATCH requests.
 
 require('dotenv').config();
